@@ -292,6 +292,8 @@
 				DEVELOPMENT_TEAM = 8694MP2DZ2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookOfHours/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Book of Hours";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -320,6 +322,8 @@
 				DEVELOPMENT_TEAM = 8694MP2DZ2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookOfHours/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Book of Hours";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
