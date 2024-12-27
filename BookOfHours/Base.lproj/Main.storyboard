@@ -180,6 +180,8 @@
                     <navigationItem key="navigationItem" id="TTO-pj-Mjr"/>
                     <connections>
                         <outlet property="HoursLabel" destination="8WQ-T8-ONZ" id="0sg-Nn-AJc"/>
+                        <outlet property="ThoughtJoke" destination="uUr-uG-rJi" id="kOM-9H-a3c"/>
+                        <outlet property="disableNotificationsSwitch" destination="H4W-el-rqk" id="6YT-Ei-3Wp"/>
                         <outlet property="endHourPicker" destination="xOG-hm-3zb" id="gWr-Ph-ZC3"/>
                         <outlet property="intervalHourPicker" destination="yef-Wk-ebl" id="IjB-8U-VNs"/>
                         <outlet property="startHourPicker" destination="NrB-KS-7Bi" id="FWH-3O-gFy"/>

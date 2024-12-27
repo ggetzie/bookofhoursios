@@ -17,9 +17,13 @@ class ViewController: UIViewController {
         // UserDefaults.standard.object(forKey) -- retrieve data from userdefaults
         super.viewDidLoad()
         newQuote()
-        if UserDefaults.standard.object(forKey: "SettingsComplete") == nil {
+        if UserDefaults.standard.object(forKey: BoHSettingsComplete) == nil {
             performSegue(withIdentifier: "toSettings", sender: nil)
+            return
         }
+        
+        print("Found \(jokes.count) jokes.")
+        print("Found \(quotes.count) quotes")
 
     }
 
