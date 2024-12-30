@@ -7,60 +7,6 @@
 
 import Foundation
 
-let quotes: [String] = [
-    "Ask not what your country can do for you, ask what you can do for your country.\n- John F Kennedy", // 1
-    "Everybody has a plan until they get punched in the mouth.\n- Mike Tyson", // 2
-    "I have never seen a thin person drinking Diet Coke.\n- Donald Trump", // 3
-    "Be the change you want to see in the world.\n- Gandhi", // 4
-    "That's one small step for man, one giant leap for mankind. - Neil Armstrong", // 5
-    "Not all who wander are lost.\n- J.R.R. Tolkein", // 6
-    "Daring in design, cautious in execution\n- John D. Rockefeller, Sr.", // 7
-    "If you think something's supposed to hurt, you're less likely to notice if you're doing it wrong.\n- Paul Graham", // 8
-    "Mr. McCabe thinks that I am not serious but only funny, because Mr. McCabe thinks funny is the opposite of serious. Funny is the opposite of not funny, and of nothing else.\n- G.K. Chesterton", // 9
-    "Tragedy is when I cut my finger. Comedy is when you fall into an open sewer and die.\n- Mel Brooks", // 10
-    "Let's think the unthinkable, let's do the undoable. Let us prepare to grapple with the ineffable itself, and see if we may not eff it after all.\n- Douglas Adams", // 11
-    "You only live once, but if you do it right, once is enough.\n-Mae West", // 12
-    "What are you gonna do, stab me?\n-Man who got stabbed", // 13
-    "Well done is better than well said.\n-Benjamin Franklin", // 14
-    "Do not go where the path may lead, go instead where there is no path and leave a trail.\n-Ralph Waldo Emerson", // 15
-    "Be yourself; everyone else is already taken.\n-Oscar Wilde", // 16
-    "You have brains in your head. You have feet in your shoes. You can steer yoruself any direction you choose.\n-Dr. Seuss", // 17
-    "Do I contradict myself?? Very well then, I contradict myself. (I am large, I contain multitudes.)-\nWalt Whitman", // 18
-    "May you live all the days of your life.\n-Jonathan Swift", // 19
-    "In the depth of windter, I finally learned that within me there lay an invincible summer.\n-Albert Camus", // 20
-    "We have nothing to fear but fear itself.\n-Franklin Delano Rooselvelt", // 21
-    "I find that the harder I work, the more luck I seem to have.\n-Thomas Jefferson", // 22
-    "The secret to success is to do the common thing uncommonly well.\n- John D. Rockefeller Jr.", // 23
-    "Everything you can imagine is real.\n-Pablo Picasso" // 24
-]
-
-let jokes: [String] = [
-    "What does a baby computer call his father?\nData", // 1
-    "After an unsuccessful harvest, why did the farmer decide to try a career in music?\nBecause he had a ton of sick beets.", // 2
-    "I just found out I’m colorblind. The news came out of the purple!", // 3
-    "Never date a tennis player. Love means nothing to them.", // 4
-    "I don't trust stairs. They're always up to something.", // 5
-    "Have you heard about the restaurant on the moon? Great food, no atmosphere.", // 6
-    "I used to hate facial hair, but then it grew on me.", // 7
-    "What's blue and not very heavy? Light blue.", // 8
-    "I just applied for a job down at the diner. I told them I really bring a lot to the table.", // 9
-    "The inventor of the rotating coffin must be spinning in his grave.", // 10
-    "Where do cows go for entertainment?\nTo the moo-vies.", // 11
-    "Why should you never brush your teeth with your left hand?\nBecause a toothbrush works better.", // 12
-    "Do you know the last thing my grandfather said to me before he kicked the bucket?\n\"Grandson, watch how far I can kick this bucket.\"", // 13
-    "What do you call a fake noodle?\nAn impasta", // 14
-    "Why can't a leopard hide?\nBecause he's always spotted", // 15
-    "What do you get from a pampered cow?\nSpoiled Milk", // 16
-    "Can a kangaroo jump higher than the Empire State Building?\nOf course! Buildings can't jump.", // 17
-    "Did you hear about the book I'm reading about anti-gravity?\nIt's impossible to put down.", // 18
-    "What did one ocean say to the other ocean?\nNothing they just waved.", // 19
-    "How do you organize a space party?\nYou planet.", // 20
-    "Why are skeletons so calm?\nBecause nothing gets under their skin.", // 21
-    "What is a mummy's favorite food?\nWraps", // 22
-    "What was the child who wouldn't nap guilty of?\nResisting a rest!", // 23
-    "What runs around a baseball field but never moves?\nA fence.", // 24
-]
-
 // settings key to indicate if user has saved settings
 let BoHSettingsComplete = "BoHSettingsComplete"
 

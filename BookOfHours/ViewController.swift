@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         }
         
         print("Found \(jokes.count) jokes.")
-        print("Found \(quotes.count) quotes")
+        print("Found \(gnomics.count) quotes")
 
     }
 
@@ -34,8 +34,8 @@ class ViewController: UIViewController {
 
     func newQuote() {
         
-        quoteLabel.text = quotes[quoteIndex]
-        quoteIndex = (quoteIndex + 1) % quotes.count
+        quoteLabel.text = gnomics[quoteIndex]
+        quoteIndex = (quoteIndex + 1) % gnomics.count
     }
 }
 
