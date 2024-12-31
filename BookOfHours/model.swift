@@ -11,7 +11,7 @@ import Foundation
 let BoHSettingsComplete = "BoHSettingsComplete"
 
 // settings key - true if jokes selected, false if thoughts selected
-let BoHJokes = "BoHJokes"
+let BoHJokesSelected = "BoHJokesSelected"
 
 // settings key - the index of the current quote or joke to display
 let BoHIndex = "BoHIndex"

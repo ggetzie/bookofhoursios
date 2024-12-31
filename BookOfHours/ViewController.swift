@@ -10,32 +10,53 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var quoteLabel: UILabel!
-    var quoteIndex = 0
     
     override func viewDidLoad() {
-        // Userdefaults.standard.set -- save data in userdefaults
-        // UserDefaults.standard.object(forKey) -- retrieve data from userdefaults
+        
         super.viewDidLoad()
-        newQuote()
+     
         if UserDefaults.standard.object(forKey: BoHSettingsComplete) == nil {
             performSegue(withIdentifier: "toSettings", sender: nil)
             return
         }
         
-        print("Found \(jokes.count) jokes.")
-        print("Found \(gnomics.count) quotes")
+        displayGnomicOrJoke()
 
     }
-
-
-    @IBAction func newQuoteTapped(_ sender: Any) {
-        newQuote()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        displayGnomicOrJoke()
     }
-
-    func newQuote() {
+    
+    func displayGnomicOrJoke() {
+        // print("Found \(jokes.count) jokes.")
+        // print("Found \(gnomics.count) quotes")
         
-        quoteLabel.text = gnomics[quoteIndex]
-        quoteIndex = (quoteIndex + 1) % gnomics.count
+        let startHour = (UserDefaults.standard.object(forKey: BoHStartHour) ?? 9) as! Int
+        let endHour = (UserDefaults.standard.object(forKey: BoHEndHour) ?? 17) as! Int
+        let interval = (UserDefaults.standard.object(forKey: BoHInterval) ?? 2) as! Int
+        let lastChecked = (UserDefaults.standard.object(forKey: BoHLastChecked) ?? Date()) as! Date
+        let currentTime = Date()
+        var index = (UserDefaults.standard.object(forKey: BoHIndex) ?? 0) as! Int
+        let jokesSelected = (UserDefaults.standard.object(forKey: BoHJokesSelected) ?? false) as! Bool
+        if shouldIncrement(startHour: startHour, endHour: endHour, interval: interval, lastChecked: lastChecked, currentTime: currentTime) {
+            index += 1
+            if jokesSelected {
+                index = index % jokes.count
+            } else {
+                index = index % gnomics.count
+            }
+        }
+        if jokesSelected {
+            index = index >= jokes.count ? index % jokes.count : index
+            quoteLabel.text = jokes[index]
+        } else {
+            index = index >= gnomics.count ? index % gnomics.count : index
+            quoteLabel.text = gnomics[index]
+        }
+        UserDefaults.standard.setValue(index, forKey: BoHIndex)
+        UserDefaults.standard.setValue(Date(), forKey: BoHLastChecked)
+        
     }
 }
 

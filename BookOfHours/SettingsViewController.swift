@@ -13,7 +13,6 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var endHourPicker: UIPickerView!
     @IBOutlet weak var intervalHourPicker: UIPickerView!
     @IBOutlet weak var ThoughtJoke: UISegmentedControl!
-    @IBOutlet weak var HoursLabel: UILabel!
     @IBOutlet weak var disableNotificationsSwitch: UISwitch!
     
     let startEndHours = ["midnight", "1 am", "2 am", "3 am", "4 am", "5 am",
@@ -48,16 +47,16 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView.tag {
         case 1, 2:
-            print("selected \(startEndHours[row]) in  Picker \(pickerView.tag)")
+            // print("selected \(startEndHours[row]) in  Picker \(pickerView.tag)")
             let startHour = startHourPicker.selectedRow(inComponent: 0)
             let endHour = endHourPicker.selectedRow(inComponent: 0)
             let duration = calculateActiveDuration(start: startHour, end: endHour)
-            HoursLabel.text = "\(duration) Hours"
             updateIntervalOptions(duration: duration)
         case 3:
             let selection = intervalHours[row]
-            print("selected \(selection) in interval")
+            // print("selected \(selection) in interval")
         default:
+            // should not happen
             print("selected row in picker tagged \(pickerView.tag)")
         }
     }
@@ -83,11 +82,9 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         startHourPicker.dataSource = self
         startHourPicker.tag = 1
         
-        
         endHourPicker.delegate = self
         endHourPicker.dataSource = self
         endHourPicker.tag = 2
-
         
         intervalHourPicker.delegate = self
         intervalHourPicker.dataSource = self
@@ -110,16 +107,11 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
   
 
     @IBAction func saveButtonClicked(_ sender: Any) {
-        print("Save clicked")
-        // store the list of notification hours in UserDefaults
-        // store the selection of jokes or quotes
-        // set up notifications
-        // store that settings have been set
-
-
-        // save the start hour and end hour
+        // save the start hour, end hour, and interval
         UserDefaults.standard.setValue(startHourPicker.selectedRow(inComponent: 0), forKey: BoHStartHour)
         UserDefaults.standard.setValue(endHourPicker.selectedRow(inComponent: 0), forKey: BoHEndHour)
+        let interval = intervalHours[intervalHourPicker.selectedRow(inComponent: 0)]
+        UserDefaults.standard.setValue(interval, forKey: BoHInterval)
         
         // save the user's selection of thoughts or jokes
         let thoughtOrJokeIndex = ThoughtJoke.selectedSegmentIndex
@@ -127,16 +119,19 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         if thoughtOrJokeIndex != UISegmentedControl.noSegment && thoughtOrJokeIndex != 0 {
             joke = true
         }
-        UserDefaults.standard.setValue(joke, forKey: BoHJokes)
+        UserDefaults.standard.setValue(joke, forKey: BoHJokesSelected)
 
         // clear any previous notifications
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
         
+        UserDefaults.standard.setValue(disableNotificationsSwitch.isOn, forKey: BoHNotificationsDisabled)
+        
         // schedule new notifications unless they have been disabled
+        let hours = notificationHours()
         if !disableNotificationsSwitch.isOn {
-            let hours = notificationHours()
-            print("Setting notifications for \(hours)")
+           
+            // print("Setting notifications for \(hours)")
             for hour in hours {
                 var dateComponents = DateComponents()
                 dateComponents.hour = hour
@@ -163,8 +158,61 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         if UserDefaults.standard.object(forKey: BoHLastChecked) == nil {
             UserDefaults.standard.setValue(Date(), forKey: BoHLastChecked)
         }
-        UserDefaults.standard.setValue(startHourPicker.selectedRow(inComponent: 0), forKey: BoHStartHour)
-        UserDefaults.standard.setValue(endHourPicker.selectedRow(inComponent: 0), forKey: BoHEndHour)
         UserDefaults.standard.setValue(true, forKey: BoHSettingsComplete)
+        
+        // confirm their selections to the user.
+        // "You will receive a notification for a new joke at 9am, 11am, 1pm, 3pm, 5pm"
+        // "You will receive a new abstract thought every day at 8pm, 11pm, 1am"
+        let hoursStr = hours.map({ self.startEndHours[$0] }).joined(separator: ", ")
+        let toRecieve = joke ? "joke" : "abstract thought"
+
+        var message = "You will receive "
+        if !disableNotificationsSwitch.isOn {
+            message += "a notification for "
+        }
+        message += ("a new " + toRecieve + " every day at " + hoursStr)
+        message += ("\nTap \"OK\" to continue or \"Cancel\" to clear settings")
+        
+        let alert = makeAlert(title: "Settings Saved", message: message) { action in
+            switch action.title {
+            case "OK":
+                self.navigationController?.popViewController(animated: true)
+            case "Cancel":
+                self.clearSettings()
+            default:
+                return
+            }
+        }
+        self.present(alert, animated: true, completion: nil)
     }
+    
+    func makeAlert(title: String, message: String, handler: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+        let alert = UIAlertController(title:title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: handler)
+        alert.addAction(okAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: handler)
+        alert.addAction(cancelAction)
+        return alert
+    }
+    
+    func clearSettings() {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        UserDefaults.standard.set(nil, forKey: BoHStartHour)
+        UserDefaults.standard.set(nil, forKey: BoHEndHour)
+        UserDefaults.standard.set(nil, forKey: BoHInterval)
+        UserDefaults.standard.set(nil, forKey: BoHLastChecked)
+        UserDefaults.standard.set(nil, forKey: BoHJokesSelected)
+        UserDefaults.standard.set(nil, forKey: BoHSettingsComplete)
+        UserDefaults.standard.set(nil, forKey: BoHNotificationsDisabled)
+        startHourPicker.selectRow(9, inComponent: 0, animated: true)
+        endHourPicker.selectRow(17, inComponent: 0, animated: true)
+        
+        let duration = calculateActiveDuration(start: 9, end: 17)
+        updateIntervalOptions(duration: duration)
+        intervalHourPicker.selectRow(0, inComponent: 0, animated: true)
+        ThoughtJoke.selectedSegmentIndex = 0
+        disableNotificationsSwitch.setOn(false, animated: true)
+    }
+        
 }
