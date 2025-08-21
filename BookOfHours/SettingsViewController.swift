@@ -53,7 +53,7 @@ class SettingsViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             let duration = calculateActiveDuration(start: startHour, end: endHour)
             updateIntervalOptions(duration: duration)
         case 3:
-            let selection = intervalHours[row]
+            let _ = intervalHours[row]
             // print("selected \(selection) in interval")
         default:
             // should not happen

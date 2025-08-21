@@ -108,3 +108,9 @@ func shouldIncrement(startHour: Int, endHour: Int, interval: Int, lastChecked: D
     }
     return false
 }
+
+func newIndex(oldIndex: Int, maxVal: Int)  -> Int{
+    let choices = (0..<maxVal).filter { $0 != oldIndex }
+    let randomIndex = Int.random(in: 0..<choices.count)
+    return choices[randomIndex]
+}

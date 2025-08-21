@@ -24,13 +24,16 @@ class ViewController: UIViewController {
 
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         displayGnomicOrJoke()
     }
+    
     
     func displayGnomicOrJoke() {
         // print("Found \(jokes.count) jokes.")
         // print("Found \(gnomics.count) quotes")
+        print("display gnomic or joke called")
         
         let startHour = (UserDefaults.standard.object(forKey: BoHStartHour) ?? 9) as! Int
         let endHour = (UserDefaults.standard.object(forKey: BoHEndHour) ?? 17) as! Int
@@ -40,18 +43,14 @@ class ViewController: UIViewController {
         var index = (UserDefaults.standard.object(forKey: BoHIndex) ?? 0) as! Int
         let jokesSelected = (UserDefaults.standard.object(forKey: BoHJokesSelected) ?? false) as! Bool
         if shouldIncrement(startHour: startHour, endHour: endHour, interval: interval, lastChecked: lastChecked, currentTime: currentTime) {
-            index += 1
-            if jokesSelected {
-                index = index % jokes.count
-            } else {
-                index = index % gnomics.count
-            }
+            print("getting new index")
+            index = newIndex(oldIndex: index, maxVal: jokesSelected ? jokes.count : gnomics.count)
+        } else {
+            print("no index update required")
         }
         if jokesSelected {
-            index = index >= jokes.count ? index % jokes.count : index
             quoteLabel.text = jokes[index]
         } else {
-            index = index >= gnomics.count ? index % gnomics.count : index
             quoteLabel.text = gnomics[index]
         }
         UserDefaults.standard.setValue(index, forKey: BoHIndex)
