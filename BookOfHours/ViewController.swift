@@ -11,6 +11,10 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var quoteLabel: UILabel!
     
+    
+    @IBOutlet weak var entryTextbox: UITextView!
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -21,7 +25,14 @@ class ViewController: UIViewController {
         }
         
         displayGnomicOrJoke()
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(gestureRecognizer)
 
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,13 +60,47 @@ class ViewController: UIViewController {
             print("no index update required")
         }
         if jokesSelected {
-            quoteLabel.text = jokes[index]
+            quoteLabel.text = jokes[index % jokes.count]
         } else {
-            quoteLabel.text = gnomics[index]
+            quoteLabel.text = gnomics[index % gnomics.count]
         }
         UserDefaults.standard.setValue(index, forKey: BoHIndex)
         UserDefaults.standard.setValue(Date(), forKey: BoHLastChecked)
         
     }
+    
+    @IBAction func saveButtonClicked(_ sender: Any) {
+        print("Save clicked, text box text: \(entryTextbox.text ?? "")")
+        if (entryTextbox.text == "" || entryTextbox.text == nil) {
+            let alert = UIAlertController(title:"Error", message: "Please enter some text", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        let context = CoreDataStack.shared.persistentContainer.viewContext
+        let newEntry = Entry(context: context)
+        newEntry.id = UUID()
+        newEntry.text = self.entryTextbox.text!
+        newEntry.created = Date()
+        newEntry.prompt = self.quoteLabel.text!
+        do {
+            try context.save()
+            let alert = UIAlertController(title:"Success", message: "Saved!", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+            entryTextbox.text = ""
+        } catch {
+            let nsError = error as NSError
+            let alert = UIAlertController(title:"Error", message: "Could not save! \(nsError)", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+            print("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+
+    }
+    
 }
 
